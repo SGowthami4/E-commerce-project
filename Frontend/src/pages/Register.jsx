@@ -1,5 +1,5 @@
 import {React,useState} from 'react'
-import {Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography} from '@mui/material';
+import {Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography} from '@mui/material';
 import {AddAPhotoRounded, MailOutlineOutlined} from '@mui/icons-material'
 import VisibilityOutlined from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
@@ -7,14 +7,14 @@ import Link from '@mui/joy/Link';
 import AccountCircleOutlined from '@mui/icons-material/AccountCircleOutlined'
 
 export default function Register() {
-    const [showPassword,setShowPassword]=useState(true)
+    const [showPassword,setShowPassword]=useState(false)
     const [showConfirmPassword,setShowConfirmPassword]=useState(false)
     const [signupInfo,setSignUpInfo]=useState({
         username:"",
         email:"",
         password:"",
         confirmPassword:"",
-        profilePic:""
+        profile:""
     })
     const [base64, setBase64] = useState('');
     const handleImageUpload=(e)=>{
@@ -44,7 +44,7 @@ export default function Register() {
                             <AddAPhotoRounded style={{fontSize:"50px"}}/>
                         </div>)}
                         
-                          <span className="absolute right-2 bottom-0.5 bg-slate-200 bg-opacity-80 font-bold rounded-full p-.5 cursor-pointer">Profile</span>
+                          {base64?<span></span>:(<span className="absolute right-2 bottom-0.5 bg-slate-200 bg-opacity-80 font-bold rounded-full p-.5 cursor-pointer">Profile</span>)}
                             <input type="file" accept='image/*' className='hidden' onChange={handleImageUpload}  />
                         </label>
                     </form>
@@ -58,7 +58,7 @@ export default function Register() {
                     placeholder='Username'
                     value={signupInfo.username}
                     name='username'
-                    onChange={(e)=>setSignUpInfo({...signupInfo,email:e.target.value})}
+                    onChange={(e)=>setSignUpInfo({...signupInfo,username:e.target.value})}
                     endAdornment={
                         <InputAdornment position='end'>
                             <IconButton edge='end'>
