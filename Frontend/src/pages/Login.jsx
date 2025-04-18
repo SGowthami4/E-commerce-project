@@ -1,10 +1,11 @@
-import {React,useState} from 'react'
-import {Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography} from '@mui/material';
+import {React,useState,useEffect} from 'react'
+import {Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography,Snackbar} from '@mui/material';
 import {MailOutlineOutlined} from '@mui/icons-material'
 import VisibilityOutlined from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import Link from '@mui/joy/Link';
-
+import {useNavigate} from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 export default function Login() {
     const [showPassword,setShowPassword]=useState(true)
@@ -12,6 +13,64 @@ export default function Login() {
         email:"",
         password:""
     })
+    const [loginMessage,setLoginMessage]=useState('');
+    const [loading,setLoading]=useState(false);
+    const navigate=useNavigate();
+
+    const handleLogin=async(e)=>{
+        e.preventDefault();
+
+        if(!loginInfo.email.trim() || !loginInfo.password.trim()){
+            alert('All fields are required for login');
+            return;
+        }
+        setLoading(true);
+        try{
+            const response=await fetch('http://localhost:3500/user/login',{
+                method:'POST',
+                credentials:'include',
+                headers:{
+                    'Content-type':'application/json',
+                },
+                body:JSON.stringify(loginInfo)
+            })
+            if(!response.ok){
+                const errorMessage=await response.json();
+                throw new Error(errorMessage.error || "Error Logging in");
+            }
+            const data=await response.json();
+            console.log('Login Successful',data);
+            localStorage.setItem("authToken",data.token.token);
+            localStorage.setItem('isLoggedIn:',true);
+            localStorage.setItem('userInfo',data.token.userInfo);
+            localStorage.setItem('LoginSuccessfull','true');
+            setLoginMessage("Login Successful")
+                        setTimeout(()=>{
+                localStorage.removeItem('LoginSuccessful');
+            },1500);
+            setLoginInfo({
+                email:'',
+                password:''
+            })
+        }catch(error){
+            setLoginMessage(error.message || "Error Loggin in");
+            console.log(error);
+        }finally{
+            setLoading(false);
+        }
+    }
+    useEffect(() => {
+        if (loginMessage) {
+          if (loginMessage === "Login Successful") {
+            toast.success(loginMessage);
+            navigate('/')
+          } else {
+            toast.error(loginMessage);
+          }
+        }
+      }, [loginMessage]);
+      
+ 
   return (
     <section id='login'>
         <div className='mx-auto container p-4'>
@@ -55,6 +114,8 @@ export default function Login() {
                             showPassword?'hide the password':'display the password'
                         }
                         onClick={()=>setShowPassword((prev)=>!prev)}
+                        onMouseDown={(e)=>e.preventDefault()}
+                        onMouseUp={(e)=>e.preventDefault()}
                         edge='end'>
                             {showPassword?<VisibilityOffOutlinedIcon />:<VisibilityOutlined />} 
                         </IconButton>
@@ -65,9 +126,10 @@ export default function Login() {
                 </FormControl>
                 <div className='flex justify-end w-[95%]'>
                 <Link href="/forgot-password" >Forgot Password ?</Link>                </div>
-                <div className='flex justify-center items-center '>
-                    <Button variant='contained' className='hover:scale-110 transition-all'>Login</Button>   
+                <div className='flex justify-center items-center'>
+                    <Button variant='contained' className='hover:scale-110 transition-all' onClick={handleLogin} disabled={loading} >{loading?"Logging in ...":"Login"}</Button>   
                 </div>
+               
             <Typography padding={2} className=''>Don't have account ? <Link href='/register' sx={{ cursor: 'pointer', }} >Register</Link> here</Typography>
             </div>
         </div>
