@@ -1,8 +1,9 @@
 const app=require('./app.cjs')
+require("dotenv").config()
 
-const PORT=process.env.PORT || 3000;
+const port=3500;
 
-app.listen(PORT,()=>{
-    console.log(`server is running on http://localhost:${PORT}`);
+app.listen(port,()=>{
+    console.log(`server is running on http://localhost:${port}`);
     
 })

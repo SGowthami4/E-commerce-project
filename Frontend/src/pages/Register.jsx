@@ -17,21 +17,47 @@ export default function Register() {
     })
     const [confirmPassword,setConfirmPassword]=useState('')
     const [loading,setLoading]=useState(false)
-    const [base64, setBase64] = useState('');
+    const [cdnLink, setcdnLink] = useState('');
     const [registered,setRegistered]=useState(false)
     const [message,setMessage]=useState('')
 
-    const handleImageUpload=(e)=>{
-        const file=e.target.files[0];
-        if(!file) return;
-        const reader=new FileReader();
-        reader.onloadend=()=>{
-            setBase64(reader.result); 
-            setSignUpInfo(prev => ({ ...prev, profile: reader.result }));
-            console.log('Base64',reader.result);   
-        }
-        reader.readAsDataURL(file)
-        }
+    async function handleImageUpload(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "unsigned_preset"); 
+      
+        const response = await fetch("https://api.cloudinary.com/v1_1/dfa8jqtun/image/upload", {
+          method: "POST",
+          body: formData,
+        });
+      
+        const data = await response.json();
+        console.log("CDN URL:", data.secure_url);
+        setcdnLink(data.secure_url);
+      }
+      
+
+    // const handleImageUpload=(e)=>{
+    //     const file=e.target.files[0];
+    //     if(!file) return;
+    //     const reader=new FileReader();
+    //     reader.onloadend=()=>{
+    //         setBase64(reader.result); 
+    //         setSignUpInfo(prev => ({ ...prev, profile: reader.result }));
+    //         console.log('Base64',reader.result);   
+    //     }
+    //     reader.readAsDataURL(file)
+    //     }
+
+        const handleChange = async (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const cdnUrl = await handleImageUpload(file);
+            console.log("CDN URL:", cdnUrl);
+          }
+        };
+      
+      
         const handleRegistration=async(e)=>{
             e.preventDefault();
             if(!signupInfo.username || !signupInfo.password || !signupInfo.email || !confirmPassword){
@@ -44,6 +70,8 @@ export default function Register() {
             }
 
             setLoading(true)
+            console.log(signupInfo);
+            
             try{
                 const response=await fetch('http://localhost:3500/user/register', {
                     method:'POST',
@@ -52,6 +80,8 @@ export default function Register() {
                     },
                     body:JSON.stringify(signupInfo)
                 })
+                console.log(response);
+                
                 if(!response.ok){
                     const errorMessage = await response.json();
                     throw new Error(errorMessage.message || "Registration Failed");
@@ -66,7 +96,7 @@ export default function Register() {
                     profile:''
                 })
                 setConfirmPassword('');
-                setBase64('');
+                setcdnLink('');
             }catch(error){
                 setMessage(error.message || "Error registering user");
                 setRegistered(true);
@@ -93,15 +123,15 @@ export default function Register() {
                 <div className="w-20 h-20 mx-auto border-2 rounded-full p-2 overflow-hiddenhidden relative">
                 <form >
                 <label >
-                    {base64?(<div className='cursor-pointer'>
-                        <img src={base64} alt="profile" className='w-full h-full object-cover rounded-full' />
+                    {cdnLink?(<div className='cursor-pointer'>
+                        <img src={cdnLink} alt="profile" className='w-full h-full object-cover rounded-full' />
                         
                         </div>):(<div className='cursor-pointer'>
                             <AddAPhotoRounded style={{fontSize:"50px"}}/>
                         </div>)}
                         
-                          {base64?<span></span>:(<span className="absolute right-2 bottom-0.5 bg-slate-200 bg-opacity-80 font-bold rounded-full p-.5 cursor-pointer">Profile</span>)}
-                            <input type="file" accept='image/*' className='hidden' onChange={handleImageUpload}  />
+                          {cdnLink?<span></span>:(<span className="absolute right-2 bottom-0.5 bg-slate-200 bg-opacity-80 font-bold rounded-full p-.5 cursor-pointer">Profile</span>)}
+                            <input type="file" accept='image/*' className='hidden' onChange={handleChange}  />
                         </label>
                     </form>
                 </div>

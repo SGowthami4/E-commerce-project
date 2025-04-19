@@ -20,6 +20,7 @@ const transporter=createTransport({
 })
 
 const registerUser=async({username,email,password,profile})=>{
+    console.log("logging details.....",username,password,email,profile);
     try{
 
         const receiver=email;
@@ -87,7 +88,7 @@ const loginUser=async({email,password})=>{
             throw new Error("Invalid credentials");
         }
         const token=jwt.sign({
-            userId:user.id,email:user.email,username:user.username},
+            userId:user.id,email:user.email,username:user.username,profile:user.profile},
             JWT_SECRET
     );
        
@@ -99,9 +100,19 @@ const loginUser=async({email,password})=>{
     }
 };
 
+const findUserById=async({userId})=>{
+    try{
+        const user=await prisma.user.findUnique({where:{id:userId}})
+        return user
+    }catch(error){
+        console.error("Error loggin in",error.message)
+    }
+}
+
 
 module.exports={
     registerUser,
     verifyUser,
-    loginUser
+    loginUser,
+    findUserById
 }

@@ -1,4 +1,4 @@
-import {React,useState,useEffect} from 'react'
+import {React,useState,useEffect, useContext} from 'react'
 import {Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography,Snackbar} from '@mui/material';
 import {MailOutlineOutlined} from '@mui/icons-material'
 import VisibilityOutlined from '@mui/icons-material/VisibilityOutlined';
@@ -6,6 +6,7 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import Link from '@mui/joy/Link';
 import {useNavigate} from 'react-router-dom'
 import { toast } from 'react-toastify';
+import Context from '../components/Context';
 
 export default function Login() {
     const [showPassword,setShowPassword]=useState(true)
@@ -16,6 +17,10 @@ export default function Login() {
     const [loginMessage,setLoginMessage]=useState('');
     const [loading,setLoading]=useState(false);
     const navigate=useNavigate();
+
+    const {fetchUserDetails}=useContext(Context);
+    console.log("general Context",fetchUserDetails());
+    
 
     const handleLogin=async(e)=>{
         e.preventDefault();
@@ -64,6 +69,7 @@ export default function Login() {
           if (loginMessage === "Login Successful") {
             toast.success(loginMessage);
             navigate('/')
+            fetchUserDetails();
           } else {
             toast.error(loginMessage);
           }

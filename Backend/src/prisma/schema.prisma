@@ -15,97 +15,99 @@ datasource db {
 
 
 model user{
+    id Int @id @default(autoincrement())
+    username String
+    email String @unique
+    password String
+    profile String?
+    role   String @default("CUSTOMER")
+    createdAt DateTime @default(now())
+    cart cart?
+    wishlist wishlist?
+    order order[]
+  }
+  
+  model Product{
+    id Int @id @default(autoincrement())
+    name String
+    description String
+    price Float
+    image String[]
+    category String
+    quantity Int
+    cartItems cartItem[]
+    wishlist wishlist[] @relation("wishlistProducts")
+    orderItems orderItem[]
+    
+  }
+  
+  model cart{
   id Int @id @default(autoincrement())
-  username String
-  email String @unique
-  password String
-  profile String?
-  role   String @default("CUSTOMER")
-  createdAt DateTime @default(now())
-  cart cart?
-  wishlist wishlist?
-  order order[]
-}
-
-model Product{
-  id Int @id @default(autoincrement())
-  name String
-  description String
-  price Float
-  image String
-  category String
-  quantity Int
+  userId Int @unique
+  user user @relation(fields: [userId],references: [id])
   cartItems cartItem[]
-  wishlist wishlist[] @relation("wishlistProducts")
-  orderItems orderItem[]
-}
-
-model cart{
-id Int @id @default(autoincrement())
-userId Int @unique
-user user @relation(fields: [userId],references: [id])
-cartItems cartItem[]
-}
-
-model cartItem{
+  }
+  
+  model cartItem{
+    id Int @id @default(autoincrement())
+    cartId Int
+    cart cart @relation(fields: [cartId],references: [id])
+    productId Int
+    product Product @relation(fields: [productId],references: [id])
+    quantity Int
+    isDeleted Boolean @default(false)
+  }
+  
+  model wishlist{
   id Int @id @default(autoincrement())
-  cartId Int
-  cart cart @relation(fields: [cartId],references: [id])
+  userId Int @unique 
+  user user @relation(fields: [userId],references: [id])
+  product Product[] @relation("wishlistProducts")
+  isRemoved Boolean @default(false)
+  }
+  
+  model order{
+  id Int @id @default(autoincrement())
+  total Float
+  orderedTime DateTime @default(now())
+  userId Int 
+  user user @relation(fields: [userId],references: [id])
+  orderItems orderItem[]
+  }
+  
+  model orderItem{
+  id Int @id @default(autoincrement())
+  orderId Int
+  order order @relation(fields: [orderId],references: [id])
   productId Int
   product Product @relation(fields: [productId],references: [id])
   quantity Int
-  isDeleted Boolean @default(false)
-}
-
-model wishlist{
-id Int @id @default(autoincrement())
-userId Int @unique 
-user user @relation(fields: [userId],references: [id])
-product Product[] @relation("wishlistProducts")
-isRemoved Boolean @default(false)
-}
-
-model order{
-id Int @id @default(autoincrement())
-total Float
-orderedTime DateTime @default(now())
-userId Int 
-user user @relation(fields: [userId],references: [id])
-orderItems orderItem[]
-}
-
-model orderItem{
-id Int @id @default(autoincrement())
-orderId Int
-order order @relation(fields: [orderId],references: [id])
-productId Int
-product Product @relation(fields: [productId],references: [id])
-quantity Int
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
