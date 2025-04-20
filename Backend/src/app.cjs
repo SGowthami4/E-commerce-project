@@ -1,6 +1,6 @@
 const cors=require('cors')
-dotenv.config();
 const dotenv=require('dotenv')
+dotenv.config();
 const express=require('express')
 const userRoutes=require('./routes/userRoutes.cjs')
 const productRoutes=require('./routes/productRoutes.cjs')
