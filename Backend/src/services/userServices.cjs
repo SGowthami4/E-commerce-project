@@ -57,13 +57,13 @@ const verifyUser=async(token)=>{
         const {username,password,email,profile}=userInfo;
         const existingUser=await prisma.user.findUnique({where:{email}})
         if(existingUser){
-            return {redirect:'http://localhost:5173/login'};
+            return {redirect:'https://e-commerce-assignmenet.netlify.app/login'};
         }else{
             await prisma.user.create({
                 data:{username,password,email,profile},
 
             });
-            return {redirect:"http://localhost:5173/login"};
+            return {redirect:"https://e-commerce-assignmenet.netlify.app/login"};
         }
 
     }catch(error){
