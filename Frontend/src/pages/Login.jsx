@@ -31,7 +31,7 @@ export default function Login() {
         }
         setLoading(true);
         try{
-            const response=await fetch('http://localhost:3500/user/login',{
+            const response=await fetch('https://e-commerce-project-0hn5.onrender.com/user/login',{
                 method:'POST',
                 credentials:'include',
                 headers:{

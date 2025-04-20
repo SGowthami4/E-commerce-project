@@ -39,7 +39,7 @@ const registerUser=async({username,email,password,profile})=>{
             <table>
             <tr>
           <td align="center">
-    <a href="http://localhost:3500/user/verify/${token}"
+    <a href="https://e-commerce-project-0hn5.onrender.com/user/verify/${token}"
             style="display: inline-block; padding: 10px 20px; color: white; background-color: #007BFF; text-decoration: none; font-size: 16px; border-radius: 5px;">Verify Email</a>
                </td>
             </tr>

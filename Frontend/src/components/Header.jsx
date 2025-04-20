@@ -17,7 +17,7 @@ export default function Header() {
   console.log("user Header :",user);
 
   const handleLogout=async()=>{
-    const response=await fetch('http://localhost:3500/user/userLogout',{
+    const response=await fetch('https://e-commerce-project-0hn5.onrender.com/user/userLogout',{
       method:'get',
       credentials:'include'
     })

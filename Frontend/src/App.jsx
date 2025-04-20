@@ -11,7 +11,7 @@ import {setUserDetails} from './components/userSlice'
 export default function App() {
   const dispatch=useDispatch()
   const fetchUserDetails= async()=>{
-    const response=await fetch('http://localhost:3500/user/user-details',{
+    const response=await fetch('https://e-commerce-project-0hn5.onrender.com/user/user-details',{
       method:'get',
       credentials:'include'
     })

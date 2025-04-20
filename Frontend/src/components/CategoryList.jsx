@@ -5,7 +5,7 @@ export default function CategoryList() {
     const [loading,setLoading]=useState(false)
     const fetchCategoryProduct=async()=>{
         setLoading(true)
-        const response=await fetch('http://localhost:3500/products/categoryProduct',{
+        const response=await fetch('https://e-commerce-project-0hn5.onrender.com/products/categoryProduct',{
             method:'get'
         })
         const data=await response.json()

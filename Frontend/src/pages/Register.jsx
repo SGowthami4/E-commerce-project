@@ -73,7 +73,7 @@ export default function Register() {
             console.log(signupInfo);
             
             try{
-                const response=await fetch('http://localhost:3500/user/register', {
+                const response=await fetch('https://e-commerce-project-0hn5.onrender.com/user/register', {
                     method:'POST',
                     headers:{
                         'Content-type':'application/json',

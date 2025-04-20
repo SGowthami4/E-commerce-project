@@ -1,5 +1,5 @@
 const fetchCategoryWiseProduct=async(category)=>{
-    const response=await fetch(`http://localhost:3500/products/productByCategory`,{
+    const response=await fetch(`https://e-commerce-project-0hn5.onrender.com/products/productByCategory`,{
         method:'POST',
         headers:{
             'content-type':'application/json'

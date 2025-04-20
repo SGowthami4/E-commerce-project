@@ -8,7 +8,7 @@ export default function AllProducts() {
     const [allProducts,setAllProducts]=useState([])
 
     const fetchAllProducts=async()=>{
-        const products=await fetch('http://localhost:3500/products/get',{
+        const products=await fetch('https://e-commerce-project-0hn5.onrender.com/products/get',{
             method:'get'
         })
         const response=await products.json();
