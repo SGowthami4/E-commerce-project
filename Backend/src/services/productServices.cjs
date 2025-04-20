@@ -13,6 +13,34 @@ const getProducts=async()=>{
     }
 }
 
+const getCategory=async(req,res)=>{
+    try{
+        const categoryProduct=await prisma.product.findMany({
+            where:{},
+             distinct:'category',
+          
+        })
+        
+        return categoryProduct
+    }catch(error){
+        console.error("Error loggin in",error.message)
+    }
+}
+const categoryWiseProducts=async({category})=>{
+    try{
+        const products=await prisma.product.findMany({
+                where:{category:category},
+          
+        })
+        
+        return products
+    }catch(error){
+        console.error("Error loggin in",error.message)
+    }
+}   
+
 module.exports={
-    getProducts
+    getProducts,
+    getCategory,
+    categoryWiseProducts
 }

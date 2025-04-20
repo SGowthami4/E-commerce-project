@@ -17,7 +17,7 @@ app.use(cors({
 
 app.use('/user',userRoutes);
 module.exports=app;
-app.use('/product',productRoutes);
+app.use('/products',productRoutes);
 // app.use('/cart',cartRoutes);
 // app.use('/wishlist',wishListRoues);
 // app.use('/order',orderRoutes);

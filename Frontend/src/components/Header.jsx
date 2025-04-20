@@ -34,7 +34,7 @@ export default function Header() {
   }
   
   return (
-   <header className='h-20 shadow-md min-w-2 bg-white'>
+   <header className='h-20 shadow-md w-screen bg-white'>
      <div className='h-full container mx-auto flex items-center px-1 justify-between'>
         <div className='items-center'>
           <Link to={'/'}>
