@@ -1,6 +1,7 @@
 const cors=require('cors')
-const express=require('express')
+dotenv.config();
 const dotenv=require('dotenv')
+const express=require('express')
 const userRoutes=require('./routes/userRoutes.cjs')
 const productRoutes=require('./routes/productRoutes.cjs')
 const app=express();
@@ -9,7 +10,6 @@ const cookieParser=require('cookie-parser');
 app.use(cookieParser());
 
 
-dotenv.config();
 app.use(cors({
     origin:process.env.FRONTEND_URL,
     credentials:true
